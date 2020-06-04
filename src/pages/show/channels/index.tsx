@@ -1,6 +1,6 @@
 import React from 'react';
 import { Menu } from 'antd';
-import { VideoCameraOutlined, AppstoreOutlined } from '@ant-design/icons';
+import { AppstoreOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import { SelectParam } from 'antd/es/menu';
 import { Channel } from '@/api';
 

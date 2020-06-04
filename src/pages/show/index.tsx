@@ -3,7 +3,6 @@ import { useRequest } from '@umijs/hooks';
 import Api, { Live } from '@/api';
 import Channels from './channels';
 import { SelectParam } from 'antd/es/menu';
-import { Card, Empty } from 'antd';
 import Lives from '@/pages/show/lives';
 
 const IndexPage = () => {

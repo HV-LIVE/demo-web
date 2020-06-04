@@ -9,7 +9,6 @@ import {
   Input,
   message,
   Row,
-  Select,
   Table,
 } from 'antd';
 import { useRequest, useSessionStorageState } from '@umijs/hooks';

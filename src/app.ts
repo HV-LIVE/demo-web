@@ -1,4 +1,5 @@
 import { history, Location, RequestConfig } from 'umi';
+import Errors from './errors';
 
 export const onRouteChange = ({ location }: { location: Location }) => {
   if (location.pathname.startsWith('/admin/')) {
@@ -29,9 +30,11 @@ export const request: RequestConfig = {
     prefix: 'http://localhost:8080',
     errorConfig: {
       adaptor: (resData, ctx) => {
+        console.info(resData);
+        console.info(ctx);
         return {
-          success: !resData.err || !resData.status,
-          errorMessage: resData.error,
+          success: !(ctx.res instanceof Response),
+          errorMessage: Errors.getMessage(resData),
         };
       },
     },

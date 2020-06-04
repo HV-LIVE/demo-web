@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Empty, List } from 'antd';
+import { Card, List } from 'antd';
 import { Live } from '@/api';
 
 interface LivesProps {

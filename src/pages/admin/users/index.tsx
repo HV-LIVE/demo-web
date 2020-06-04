@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { Button, Form, Input, Row, Col, Table, message } from 'antd';
+import { Button, Col, Form, Input, message, Row, Table } from 'antd';
 import { ColumnType } from 'antd/es/table';
 import { useRequest } from '@umijs/hooks';
 import Api, { User } from '@/api';

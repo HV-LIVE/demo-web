@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Form, Input, message } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { history } from 'umi';
 
 const LoginPage = () => {
