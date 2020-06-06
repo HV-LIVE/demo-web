@@ -4,6 +4,7 @@ import Api, { Live } from '@/api';
 import Channels from './channels';
 import { SelectParam } from 'antd/es/menu';
 import Lives from '@/pages/show/lives';
+import ContentWrapper from '@/components/content_wrapper';
 
 const IndexPage = () => {
   const {
@@ -30,35 +31,30 @@ const IndexPage = () => {
     }
   };
 
-  if (systemConfigError) {
-    return <div>load error</div>;
-  }
-  if (livesError) {
-    return <div>load error</div>;
-  }
-  if (channelsError) {
-    return <div>load error</div>;
-  }
-  if (systemConfigLoading || livesLoading || channelsLoading) {
-    return <div>loading...</div>;
-  }
-
   return (
-    <div style={{ height: '100vh', overflow: 'hidden' }}>
-      <Channels
-        channels={channels || []}
-        onSelectSection={handleSelectSection}
-      />
-      <div
-        style={{
-          padding: '20px',
-          height: 'calc(100% - 80px)',
-          overflow: 'auto',
-        }}
-      >
-        <Lives systemConfig={systemConfig} lives={filterLives || lives || []} />
+    <ContentWrapper
+      loading={systemConfigLoading || livesLoading || channelsLoading}
+      error={systemConfigError || livesError || channelsError}
+    >
+      <div style={{ height: '100vh', overflow: 'hidden' }}>
+        <Channels
+          channels={channels || []}
+          onSelectSection={handleSelectSection}
+        />
+        <div
+          style={{
+            padding: '20px',
+            height: 'calc(100% - 80px)',
+            overflow: 'auto',
+          }}
+        >
+          <Lives
+            systemConfig={systemConfig}
+            lives={filterLives || lives || []}
+          />
+        </div>
       </div>
-    </div>
+    </ContentWrapper>
   );
 };
 

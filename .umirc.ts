@@ -11,6 +11,9 @@ export default defineConfig({
   locale: {
     antd: true,
   },
+  define: {
+    'process.env.API_URL': process.env.API_URL,
+  },
   routes: [
     {
       path: '/admin',

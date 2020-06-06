@@ -4,7 +4,7 @@ import { headerRender } from '@/components/header';
 
 export const request: RequestConfig = {
   timeout: 5000,
-  prefix: 'http://localhost:8080',
+  prefix: process.env.API_URL,
   errorConfig: {
     adaptor: (resData, ctx) => {
       return {
