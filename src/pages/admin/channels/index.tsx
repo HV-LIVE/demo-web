@@ -1,44 +1,53 @@
 import React from 'react';
-import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { Button, Col, Form, Input, message, Row, Table } from 'antd';
 import { ColumnType } from 'antd/es/table';
 import { useRequest } from '@umijs/hooks';
 import Api, { Channel, Section } from '@/api';
 import Sections from '@/pages/admin/channels/sections';
+import ContentWrapper from '@/components/content_wrapper';
+import Styles from './index.less';
 
-function createColumns(handleDelete: (channel: Channel) => void): ColumnType<Channel> [] {
+const createColumns = (
+  handleDelete: (channel: Channel) => void,
+): ColumnType<Channel>[] => {
   return [
     {
       title: 'ID',
       dataIndex: 'id',
     },
     {
-      title: 'NAME',
+      title: '频道名',
       dataIndex: 'name',
     },
     {
-      title: 'CREATE_TIME',
+      title: '创建时间',
       dataIndex: 'createTime',
     },
     {
-      title: 'ACTIONS',
+      title: '操作',
       render: (_, channel) => {
         return (
           <React.Fragment>
-            <Button type="ghost" danger onClick={() => handleDelete(channel)}>删除</Button>
+            <Button type="ghost" danger onClick={() => handleDelete(channel)}>
+              删除
+            </Button>
           </React.Fragment>
         );
       },
     },
   ];
-}
+};
 
 const ChannelsPage = () => {
-  const { data, error, loading, mutate } = useRequest(Api.getAllChannelsAndSections);
+  const [form] = Form.useForm();
+  const { data, error, loading, mutate } = useRequest(
+    Api.getAllChannelsAndSections,
+  );
   const createRequest = useRequest(Api.createChannel, {
     manual: true,
-    onSuccess: (res) => {
+    onSuccess: res => {
       mutate(old => [...old, res]);
+      form.resetFields();
       message.success('创建成功');
     },
   });
@@ -54,7 +63,9 @@ const ChannelsPage = () => {
       const channelIndex = old.findIndex(i => i.id === section.channelId);
       if (channelIndex !== -1) {
         const channel = { ...old[channelIndex] };
-        channel.sections = channel.sections ? [...channel.sections, section] : [section];
+        channel.sections = channel.sections
+          ? [...channel.sections, section]
+          : [section];
         const res = [...old];
         res[channelIndex] = channel;
         return res;
@@ -78,39 +89,33 @@ const ChannelsPage = () => {
     });
   };
 
-  if (error) {
-    return (<div>load error</div>);
-  }
-  if (loading) {
-    return (<div>loading...</div>);
-  }
-
   return (
-    <PageHeaderWrapper>
-      <div>
+    <ContentWrapper loading={loading} error={error}>
+      <div className={Styles.root}>
         <Form
-          name="basic"
+          name="channel"
           onFinish={channel => createRequest.run(channel as Channel)}
+          hideRequiredMark
+          form={form}
         >
-          <Row>
-            <Col span={14} key="0">
+          <Row gutter={30} justify="center">
+            <Col span={14} key="name">
               <Form.Item
-                label="Channel Name"
+                label="频道名"
                 name="name"
-                rules={[{ required: true, message: 'Please input your username!' }]}
+                rules={[{ required: true, message: '请输入频道名' }]}
               >
                 <Input />
               </Form.Item>
             </Col>
 
-            <Col span={3} key="1">
-              <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+            <Col key="submit">
+              <Form.Item>
                 <Button type="primary" htmlType="submit">
-                  Submit
+                  创建
                 </Button>
               </Form.Item>
             </Col>
-
           </Row>
         </Form>
 
@@ -131,7 +136,7 @@ const ChannelsPage = () => {
           }}
         />
       </div>
-    </PageHeaderWrapper>
+    </ContentWrapper>
   );
 };
 

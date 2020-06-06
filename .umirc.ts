@@ -5,8 +5,76 @@ export default defineConfig({
     type: 'none',
   },
   antd: {},
-  layout: {},
+  layout: {
+    name: 'HV-LIVE',
+  },
+  locale: {
+    antd: true,
+  },
   routes: [
+    {
+      path: '/admin',
+      redirect: '/admin/systemConfig',
+    },
+    {
+      path: '/admin/login',
+      component: '@/pages/admin/login',
+      wrappers: ['@/wrappers/admin_auth'],
+      layout: {
+        hideMenu: true,
+        hideNav: true,
+      },
+    },
+    {
+      path: '/admin/systemConfig',
+      component: '@/pages/admin/system_config',
+      wrappers: ['@/wrappers/admin_auth'],
+      name: '系统设置',
+      icon: 'setting',
+    },
+    {
+      path: '/admin/users',
+      component: '@/pages/admin/users',
+      wrappers: ['@/wrappers/admin_auth'],
+      name: '用户管理',
+      icon: 'team',
+    },
+    {
+      path: '/admin/channels',
+      component: '@/pages/admin/channels',
+      wrappers: ['@/wrappers/admin_auth'],
+      name: '频道管理',
+      icon: 'menu',
+    },
+    {
+      path: '/admin/lives',
+      component: '@/pages/admin/lives',
+      wrappers: ['@/wrappers/admin_auth'],
+      name: '直播管理',
+      icon: 'videoCamera',
+    },
+    {
+      path: '/user',
+      redirect: '/user/info',
+    },
+    {
+      path: '/user/login',
+      component: '@/pages/user/login',
+      wrappers: ['@/wrappers/user_auth'],
+      layout: {
+        hideMenu: true,
+        hideNav: true,
+      },
+    },
+    {
+      path: '/user/info',
+      component: '@/pages/user/info',
+      wrappers: ['@/wrappers/user_auth'],
+      layout: {
+        hideMenu: true,
+        hideNav: true,
+      },
+    },
     {
       path: '/',
       component: '@/pages/show/index',
@@ -16,69 +84,11 @@ export default defineConfig({
       },
     },
     {
-      path: '/admin',
-      redirect: '/admin/systemConfig',
-    },
-    {
-      path: '/admin/login',
-      component: '@/pages/admin/login',
-      layout: {
-        hideMenu: true,
-        hideNav: true,
-      },
-    },
-    {
-      path: '/admin/systemConfig',
-      component: '@/pages/admin/system_config',
-      icon: 'setting',
-      menu: {
-        name: 'System Config',
-      },
-    },
-    {
-      path: '/admin/users',
-      component: '@/pages/admin/users',
-      icon: 'team',
-      menu: {
-        name: 'Users',
-      },
-    },
-    {
-      path: '/admin/channels',
-      component: '@/pages/admin/channels',
-      icon: 'menu',
-      menu: {
-        name: 'Channels',
-      },
-    },
-    {
-      path: '/admin/lives',
-      component: '@/pages/admin/lives',
-      icon: 'videoCamera',
-      menu: {
-        name: 'Lives',
-      },
-    },
-    {
-      path: '/user',
-      redirect: '/user/info',
-    },
-    {
-      path: '/user/login',
-      component: '@/pages/user/login',
-      layout: {
-        hideMenu: true,
-        hideNav: true,
-      },
-    },
-    {
-      path: '/user/info',
-      component: '@/pages/user/info',
+      redirect: '/',
       layout: {
         hideMenu: true,
         hideNav: true,
       },
     },
   ],
-})
-;
+});

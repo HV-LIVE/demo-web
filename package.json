@@ -29,6 +29,7 @@
     "prettier": "^1.19.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "react-player": "^2.1.1",
     "umi": "^3.2.3",
     "yorkie": "^2.0.0"
   }

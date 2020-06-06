@@ -1,76 +1,70 @@
 import React from 'react';
-import { PageHeaderWrapper } from '@ant-design/pro-layout';
+import ContentWrapper from '@/components/content_wrapper';
 import { Button, Form, Input, InputNumber, message } from 'antd';
 import { useRequest } from '@umijs/hooks';
 import Api, { SystemConfig } from '@/api';
+import Styles from './index.less';
 
 const SystemConfigPage = () => {
   const { error, loading, data, mutate } = useRequest(Api.getSystemConfig);
   const updateRequest = useRequest(Api.updateSystemConfig, {
     manual: true,
-    onSuccess: (res) => {
+    onSuccess: res => {
       mutate(res);
       message.success('修改成功');
     },
   });
 
-  if (error) {
-    return (<div>load error</div>);
-  }
-  if (loading) {
-    return (<div>loading...</div>);
-  }
-
   return (
-    <PageHeaderWrapper>
+    <ContentWrapper loading={loading} error={error}>
       <Form
-        name="basic"
+        className={Styles.root}
+        name="system_config"
         labelCol={{ span: 4 }}
-        wrapperCol={{ span: 8 }}
+        wrapperCol={{ span: 4 }}
+        hideRequiredMark
         initialValues={data}
-        onFinish={(config) => {
-          updateRequest.run(config as SystemConfig);
-        }}
+        onFinish={config => updateRequest.run(config as SystemConfig)}
       >
         <Form.Item
-          label="Push IP"
+          label="推流服务器IP"
           name="pushIp"
-          rules={[{ required: true, message: 'Please input your username!' }]}
+          rules={[{ required: true, message: '请输入推流服务器IP' }]}
         >
           <Input />
         </Form.Item>
 
         <Form.Item
-          label="Push Port"
+          label="推流服务器端口"
           name="pushPort"
-          rules={[{ required: true, message: 'Please input your password!' }]}
+          rules={[{ required: true, message: '请输入推流服务器端口' }]}
         >
           <InputNumber />
         </Form.Item>
 
         <Form.Item
-          label="Pull IP"
+          label="播放服务器IP"
           name="pullIp"
-          rules={[{ required: true, message: 'Please input your username!' }]}
+          rules={[{ required: true, message: '请输入播放服务器IP' }]}
         >
           <Input />
         </Form.Item>
 
         <Form.Item
-          label="Pull Port"
+          label="播放服务器端口"
           name="pullPort"
-          rules={[{ required: true, message: 'Please input your password!' }]}
+          rules={[{ required: true, message: '请输入播放服务器端口' }]}
         >
           <InputNumber />
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+        <Form.Item wrapperCol={{ offset: 4 }}>
           <Button type="primary" htmlType="submit">
-            Submit
+            保存
           </Button>
         </Form.Item>
       </Form>
-    </PageHeaderWrapper>
+    </ContentWrapper>
   );
 };
 

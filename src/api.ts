@@ -1,54 +1,54 @@
 import { request } from 'umi';
 
 export interface SystemConfig {
-  pushIp: string,
-  pushPort: number,
-  pullIp: string,
-  pullPort: number,
-  createTime: string,
-  updateTime: string,
+  pushIp: string;
+  pushPort: number;
+  pullIp: string;
+  pullPort: number;
+  createTime: string;
+  updateTime: string;
 }
 
 export interface User {
-  id: number,
-  account: string,
-  password: string,
-  name: string,
-  phoneNumber: string,
-  streamName: string,
-  createTime: string,
-  updateTime: string,
+  id: number;
+  account: string;
+  password: string;
+  name: string;
+  phoneNumber: string;
+  streamKey: string;
+  createTime: string;
+  updateTime: string;
 }
 
 export interface Section {
-  id: number,
-  name: string,
-  channelId: number,
-  createTime: string,
-  updateTime: string,
+  id: number;
+  name: string;
+  channelId: number;
+  createTime: string;
+  updateTime: string;
 }
 
 export interface Channel {
-  id: number,
-  name: string,
-  sections: Section[],
-  createTime: string,
-  updateTime: string,
+  id: number;
+  name: string;
+  sections: Section[];
+  createTime: string;
+  updateTime: string;
 }
 
 export interface Live {
-  id: number,
-  title: string,
-  channelId: number,
-  channel: Channel,
-  sectionId: number,
-  section: Section,
-  userId: number,
-  user: User,
-  startTime: string,
-  endTime: string,
-  createTime: string,
-  updateTime: string,
+  id: number;
+  title: string;
+  channelId: number;
+  channel: Channel;
+  sectionId: number;
+  section: Section;
+  userId: number;
+  user: User;
+  startTime: string;
+  endTime: string;
+  createTime: string;
+  updateTime: string;
 }
 
 export default {
@@ -68,7 +68,10 @@ export default {
     return await request(`/users/${id}`, { method: 'DELETE' });
   },
   login: async (account: string, password: string): Promise<User> => {
-    return await request('/users/auth', { method: 'GET', params: { account, password } });
+    return await request('/users/auth', {
+      method: 'GET',
+      params: { account, password },
+    });
   },
   getUser: async (id: number): Promise<User> => {
     return await request(`/users/${id}`, { method: 'GET' });

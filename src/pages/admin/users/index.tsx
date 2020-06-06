@@ -1,125 +1,130 @@
 import React from 'react';
-import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { Button, Col, Form, Input, message, Row, Table } from 'antd';
 import { ColumnType } from 'antd/es/table';
 import { useRequest } from '@umijs/hooks';
 import Api, { User } from '@/api';
+import ContentWrapper from '@/components/content_wrapper';
+import Styles from './index.less';
 
-function createColumns(handleDelete: (user: User) => void): ColumnType<User> [] {
+const createColumns = (
+  handleDelete: (user: User) => void,
+): ColumnType<User>[] => {
   return [
     {
       title: 'ID',
       dataIndex: 'id',
     },
     {
-      title: 'ACCOUNT',
+      title: '账号',
       dataIndex: 'account',
     },
     {
-      title: 'NAME',
+      title: '姓名',
       dataIndex: 'name',
     },
     {
-      title: 'PHONE_NUMBER',
+      title: '手机号',
       dataIndex: 'phoneNumber',
     },
     {
-      title: 'CREATE_TIME',
+      title: '串流密钥',
+      dataIndex: 'streamKey',
+    },
+    {
+      title: '创建时间',
       dataIndex: 'createTime',
     },
     {
-      title: 'ACTIONS',
+      title: '操作',
       render: (_, user) => {
         return (
           <React.Fragment>
-            <Button type="ghost" danger onClick={() => handleDelete(user)}>删除</Button>
+            <Button type="ghost" danger onClick={() => handleDelete(user)}>
+              删除
+            </Button>
           </React.Fragment>
         );
       },
     },
   ];
-}
+};
 
 const UsersPage = () => {
+  const [form] = Form.useForm();
   const { data, error, loading, mutate } = useRequest(Api.getAllUsers);
   const createRequest = useRequest(Api.createUser, {
     manual: true,
-    onSuccess: (res) => {
-      mutate((old) => [...old, res]);
+    onSuccess: res => {
+      mutate(old => [...old, res]);
+      form.resetFields();
       message.success('创建成功');
     },
   });
   const deleteRequest = useRequest(Api.deleteUser, {
     manual: true,
     onSuccess: (res, [id]) => {
-      mutate((old) => old.filter(i => i.id !== id));
+      mutate(old => old.filter(i => i.id !== id));
       message.success('删除成功');
     },
   });
 
-  if (error) {
-    return (<div>load error</div>);
-  }
-  if (loading) {
-    return (<div>loading...</div>);
-  }
-
   return (
-    <PageHeaderWrapper>
-      <div>
+    <ContentWrapper loading={loading} error={error}>
+      <div className={Styles.root}>
         <Form
-          name="basic"
+          name="user"
           onFinish={user => createRequest.run(user as User)}
+          hideRequiredMark
+          form={form}
         >
-          <Row>
-            <Col span={5} key="0">
+          <Row gutter={30} justify="center">
+            <Col span={5} key="account">
               <Form.Item
-                label="Account"
+                label="账号"
                 name="account"
-                rules={[{ required: true, message: 'Please input your username!' }]}
+                rules={[{ required: true, message: '请输入账号' }]}
               >
                 <Input />
               </Form.Item>
             </Col>
 
-            <Col span={5} key="1">
+            <Col span={5} key="password">
               <Form.Item
-                label="Password"
+                label="密码"
                 name="password"
-                rules={[{ required: true, message: 'Please input your password!' }]}
+                rules={[{ required: true, message: '请输入密码' }]}
               >
                 <Input />
               </Form.Item>
             </Col>
 
-            <Col span={5} key="2">
+            <Col span={5} key="name">
               <Form.Item
-                label="Name"
+                label="姓名"
                 name="name"
-                rules={[{ required: true, message: 'Please input your username!' }]}
+                rules={[{ required: true, message: '请输入姓名' }]}
               >
                 <Input />
               </Form.Item>
             </Col>
 
-            <Col span={5} key="3">
+            <Col span={5} key="phoneNumber">
               <Form.Item
-                label="Phone Number"
+                label="手机号"
                 name="phoneNumber"
-                rules={[{ required: true, message: 'Please input your password!' }]}
+                rules={[{ required: true, message: '请输入手机号' }]}
               >
                 <Input />
               </Form.Item>
             </Col>
 
-            <Col span={3} key="4">
-              <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
+            <Col key="submit">
+              <Form.Item>
                 <Button type="primary" htmlType="submit">
-                  Submit
+                  创建
                 </Button>
               </Form.Item>
             </Col>
-
           </Row>
         </Form>
 
@@ -130,7 +135,7 @@ const UsersPage = () => {
           pagination={false}
         />
       </div>
-    </PageHeaderWrapper>
+    </ContentWrapper>
   );
 };
 

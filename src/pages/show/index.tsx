@@ -6,9 +6,19 @@ import { SelectParam } from 'antd/es/menu';
 import Lives from '@/pages/show/lives';
 
 const IndexPage = () => {
-  const { data: systemConfig, error: systemConfigError, loading: systemConfigLoading } = useRequest(Api.getSystemConfig);
-  const { data: lives, error: livesError, loading: livesLoading } = useRequest(Api.getAvailableLives);
-  const { data: channels, error: channelsError, loading: channelsLoading } = useRequest(Api.getAvailableChannels);
+  const {
+    data: systemConfig,
+    error: systemConfigError,
+    loading: systemConfigLoading,
+  } = useRequest(Api.getSystemConfig);
+  const { data: lives, error: livesError, loading: livesLoading } = useRequest(
+    Api.getAvailableLives,
+  );
+  const {
+    data: channels,
+    error: channelsError,
+    loading: channelsLoading,
+  } = useRequest(Api.getAvailableChannels);
   const [filterLives, setFilterLives] = useState<Live[]>();
 
   const handleSelectSection = (param: SelectParam) => {
@@ -21,16 +31,16 @@ const IndexPage = () => {
   };
 
   if (systemConfigError) {
-    return (<div>load error</div>);
+    return <div>load error</div>;
   }
   if (livesError) {
-    return (<div>load error</div>);
+    return <div>load error</div>;
   }
   if (channelsError) {
-    return (<div>load error</div>);
+    return <div>load error</div>;
   }
   if (systemConfigLoading || livesLoading || channelsLoading) {
-    return (<div>loading...</div>);
+    return <div>loading...</div>;
   }
 
   return (
@@ -39,10 +49,14 @@ const IndexPage = () => {
         channels={channels || []}
         onSelectSection={handleSelectSection}
       />
-      <div style={{ padding: '20px', height: 'calc(100% - 80px)', overflow: 'auto' }}>
-        <Lives
-          lives={filterLives || lives || []}
-        />
+      <div
+        style={{
+          padding: '20px',
+          height: 'calc(100% - 80px)',
+          overflow: 'auto',
+        }}
+      >
+        <Lives systemConfig={systemConfig} lives={filterLives || lives || []} />
       </div>
     </div>
   );
